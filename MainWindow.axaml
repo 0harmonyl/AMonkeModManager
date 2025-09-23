@@ -1,0 +1,237 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="using:BMonkeModManager.Models"
+        x:Class="BMonkeModManager.MainWindow"
+        Width="1100" Height="700"
+        Title="Monke Mod Manager">
+  <Grid RowDefinitions="*,Auto" ColumnDefinitions="250,*">
+    <!-- Sidebar -->
+    <Border Grid.Row="0" Grid.Column="0" Background="#2D2D30" Padding="10">
+      <StackPanel Spacing="10">
+        <TextBlock Text="Monke Mod Manager"
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="White" />
+        <Button x:Name="Plugins" Content="Plugins" />
+        <Button x:Name="Settings" Content="Settings" />
+        <Button x:Name="EnableDisable" Content="Enable" />
+        <Button x:Name="Browse" Content="Browse" />
+        
+        <!-- Quick actions -->
+        <Separator Background="#404040" Height="1" Margin="0,10"/>
+        <Button Content="Install Selected" Background="#16825D" Foreground="White"/>
+        <Button Content="Update All" Background="#0E639C" Foreground="White"/>
+        <Button Content="Refresh" Background="#6C6C6C" Foreground="White"/>
+      </StackPanel>
+    </Border>
+    
+    <!-- Main Content -->
+    <Border Grid.Row="0" Grid.Column="1" Background="#1E1E1E">
+      <Grid RowDefinitions="Auto,Auto,*">
+        <!-- Search Header -->
+        <Border Grid.Row="0" Background="#252526" Padding="15,10">
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <TextBox x:Name="SearchBox" 
+                     Grid.Column="0"
+                     Watermark="Search mods..." 
+                     Background="#3C3C3C"
+                     Foreground="White"
+                     BorderBrush="#464647"
+                     TextChanged="SearchBox_TextChanged"/>
+            <ComboBox x:Name="CategoryFilter" 
+                      Grid.Column="1"
+                      PlaceholderText="All Categories"
+                      Background="#3C3C3C"
+                      Foreground="White"
+                      Margin="10,0,10,0"
+                      MinWidth="120"/>
+            <ToggleButton x:Name="CompactViewToggle" 
+                          Grid.Column="2"
+                          Content="📋" 
+                          ToolTip.Tip="Toggle Compact View"
+                          IsChecked="True"/>
+          </Grid>
+        </Border>
+        
+        <!-- View Mode Tabs -->
+        <Border Grid.Row="1" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,1,0,1" Padding="15,8">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <RadioButton x:Name="CategoryViewRadio" Content="📁 Categories" IsChecked="True" Foreground="White"/>
+            <RadioButton x:Name="ListViewRadio" Content="📋 List View" Foreground="White"/>
+            <RadioButton x:Name="GridViewRadio" Content="⊞ Grid View" Foreground="White"/>
+          </StackPanel>
+        </Border>
+        
+        <!-- Category/Tree View -->
+        <ScrollViewer Grid.Row="2" x:Name="CategoryScrollViewer">
+          <TreeView x:Name="CategoryTreeView" Background="Transparent" Padding="10">
+            <TreeView.Styles>
+              <Style Selector="TreeViewItem">
+                <Setter Property="IsExpanded" Value="True"/>
+                <Setter Property="Foreground" Value="White"/>
+              </Style>
+              <Style Selector="TreeViewItem:selected">
+                <Setter Property="Background" Value="#0E639C"/>
+              </Style>
+            </TreeView.Styles>
+            
+            <TreeView.DataTemplates>
+              <!-- Group Header Template -->
+              <TreeDataTemplate DataType="models:GroupInfo" ItemsSource="{Binding Mods}">
+                <Border Background="#2D2D30" 
+                        CornerRadius="4" 
+                        Padding="8,4" 
+                        Margin="0,2">
+                  <Grid ColumnDefinitions="Auto,*,Auto">
+                    <TextBlock Grid.Column="0" 
+                               Text="📁" 
+                               VerticalAlignment="Center" 
+                               Margin="0,0,8,0"/>
+                    <TextBlock Grid.Column="1" 
+                               Text="{Binding Name}" 
+                               FontWeight="Bold" 
+                               FontSize="14"
+                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2" 
+                               Text="{Binding Mods.Count, StringFormat='({0})'}" 
+                               Foreground="#CCCCCC" 
+                               FontSize="11"
+                               VerticalAlignment="Center"/>
+                  </Grid>
+                </Border>
+              </TreeDataTemplate>
+              
+              <!-- Compact Mod Template -->
+              <DataTemplate DataType="models:ModInfo">
+                <Border Background="#252526" 
+                        BorderBrush="#3E3E42" 
+                        BorderThickness="0,0,0,1" 
+                        Padding="12,6"
+                        Margin="0,0,0,0">
+                  <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                    <!-- Checkbox -->
+                    <CheckBox Grid.Column="0" 
+                              VerticalAlignment="Center"
+                              Margin="0,0,10,0"/>
+                    
+                    <!-- Mod Info -->
+                    <StackPanel Grid.Column="1" Orientation="Vertical" Spacing="2">
+                      <TextBlock Text="{Binding Name}" 
+                                 FontSize="13" 
+                                 FontWeight="SemiBold" 
+                                 Foreground="White"/>
+                      <TextBlock FontSize="11" Foreground="#AAAAAA">
+                        <Run Text="by"/>
+                        <Run Text="{Binding Author}" Foreground="#CCCCCC"/>
+                        <Run Text="•"/>
+                        <Run Text="{Binding Version}" Foreground="#6A9955"/>
+                      </TextBlock>
+                    </StackPanel>
+                    
+                    <!-- Status -->
+                    <Border Grid.Column="2" 
+                            Background="#16825D" 
+                            CornerRadius="10" 
+                            Padding="6,2" 
+                            Margin="5,0"
+                            VerticalAlignment="Center">
+                      <TextBlock Text="✓" FontSize="10" Foreground="White"/>
+                    </Border>
+                    
+                    <!-- Quick Install -->
+                    <Button Grid.Column="3" 
+                            Content="⬇" 
+                            Background="Transparent"
+                            Foreground="#0E639C"
+                            BorderThickness="0"
+                            Padding="8,4"
+                            ToolTip.Tip="Install"
+                            VerticalAlignment="Center"/>
+                    
+                    <!-- More Options -->
+                    <Button Grid.Column="4" 
+                            Content="⋯" 
+                            Background="Transparent"
+                            Foreground="#CCCCCC"
+                            BorderThickness="0"
+                            Padding="8,4"
+                            ToolTip.Tip="More Options"
+                            VerticalAlignment="Center"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </TreeView.DataTemplates>
+          </TreeView>
+        </ScrollViewer>
+        
+        <!-- List View (initially hidden) -->
+        <ScrollViewer Grid.Row="2" x:Name="ListScrollViewer" IsVisible="False">
+          <ItemsControl x:Name="ModsList" Padding="10">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="models:ModInfo">
+                <Border Background="#252526" 
+                        BorderBrush="#3E3E42" 
+                        BorderThickness="0,0,0,1" 
+                        Padding="15,8">
+                  <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+                    <CheckBox Grid.Column="0" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    
+                    <StackPanel Grid.Column="1">
+                      <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
+                      <TextBlock Text="{Binding Author}" FontSize="11" Foreground="#CCCCCC"/>
+                    </StackPanel>
+                    
+                    <TextBlock Grid.Column="2" Text="{Binding Version}" 
+                               FontSize="11" Foreground="#6A9955" 
+                               VerticalAlignment="Center" Margin="10,0"/>
+                    
+                    <TextBlock Grid.Column="3" Text="{Binding GroupInfo.Name, FallbackValue='Other'}" 
+                               FontSize="10" Foreground="#569CD6" 
+                               VerticalAlignment="Center" Margin="10,0"/>
+                    
+                    <Button Grid.Column="4" Content="Install" 
+                            Background="#0E639C" Foreground="White"
+                            Padding="8,4" Margin="5,0"/>
+                    
+                    <Button Grid.Column="5" Content="GitHub" 
+                            Background="#24292E" Foreground="White"
+                            Padding="8,4" Margin="5,0"/>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </Grid>
+    </Border>
+    
+    <!-- Bottom Bar -->
+    <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#2D2D30" Padding="10">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock x:Name="StatusText"
+                   Grid.Column="0"
+                   Text="Status: Ready"
+                   Foreground="White"
+                   VerticalAlignment="Center"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="20">
+          <TextBlock x:Name="ModCount" 
+                     Text="0 mods" 
+                     Foreground="#CCCCCC" 
+                     VerticalAlignment="Center"
+                     FontSize="12"/>
+          <TextBlock Text="•" Foreground="#666" VerticalAlignment="Center"/>
+          <TextBlock x:Name="SelectedCount" 
+                     Text="0 selected" 
+                     Foreground="#CCCCCC" 
+                     VerticalAlignment="Center"
+                     FontSize="12"/>
+          <TextBlock Text="•" Foreground="#666" VerticalAlignment="Center"/>
+          <TextBlock x:Name="GamePath" 
+                     Text="No game path" 
+                     Foreground="#CCCCCC" 
+                     VerticalAlignment="Center"
+                     FontSize="12"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+  </Grid>
+</Window>
