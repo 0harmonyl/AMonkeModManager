@@ -1,7 +1,7 @@
-﻿using Avalonia;
+using Avalonia;
 using System;
 
-namespace BMonkeModManager;
+namespace AMonkeModManager;
 
 class Program
 {

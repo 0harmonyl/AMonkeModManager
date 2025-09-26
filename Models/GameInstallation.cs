@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
-namespace BMonkeModManager.Models;
+namespace AMonkeModManager.Models;
 
 public class GameInstallation
 {

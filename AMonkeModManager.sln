@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMonkeModManager", "BMonkeModManager.csproj", "{55E5FA81-49D8-34BA-771F-6E7B6C410080}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AMonkeModManager", "AMonkeModManager.csproj", "{55E5FA81-49D8-34BA-771F-6E7B6C410080}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

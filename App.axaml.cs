@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
-namespace BMonkeModManager;
+namespace AMonkeModManager;
 
 public partial class App : Application
 {

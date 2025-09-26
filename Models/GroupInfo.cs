@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace BMonkeModManager.Models;
+namespace AMonkeModManager.Models;
 
 public class GroupInfo
 {

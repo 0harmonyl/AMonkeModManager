@@ -1,4 +1,4 @@
-namespace BMonkeModManager.Models;
+namespace AMonkeModManager.Models;
 
 public class ModInfo
 {
